@@ -20,7 +20,7 @@ describe('Integration Tests', () => {
 
   describe('End-to-end logging workflow', () => {
     it('should complete full logging workflow for successful request', async () => {
-      // Arrange
+      // Arrangeba
       const mockResponse = {
         ok: true,
         status: 200,
