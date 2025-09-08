@@ -4,8 +4,7 @@
   "description": "Logger module",
   "license": "ISC",
   "author": "",
-  "type": "module",
-  "main": "logger.js",
+  "main": "src/index.ts",
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",

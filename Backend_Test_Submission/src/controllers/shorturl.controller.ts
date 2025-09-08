@@ -1,23 +1,23 @@
 import { Request, Response } from 'express';
+import { createShortUrl, getShortUrlStats } from '../services/url.service';
 
-export const createShortUrl = (req: Request, res: Response) => {
-
-const { url, validity = 30, shortcode } = req.body;
-
-  // TODO: Generate short URL, store metadata, log event
-  res.status(201).json({ shortLink: `http://localhost:3000/${shortcode}`, expiry: new Date(Date.now() + validity * 60000).toISOString() });
+export const createShortUrlHandler = (req: Request, res: Response) => {
+  try {
+    const result = createShortUrl(req.body);
+    res.status(201).json(result);
+  } catch (err) {
+    res.status(400).json({ error: (err as Error).message });
+  }
 };
 
-export const getShortUrlStats = (req: Request, res: Response) => {
+export const getShortUrlStatsHandler = (req: Request, res: Response) => {
   const { shortcode } = req.params;
+  const stats = getShortUrlStats(shortcode);
 
-  res.json({
-    originalUrl: 'https://example.com',
-    createdAt: new Date().toISOString(),
-    expiry: new Date(Date.now() + 1800000).toISOString(),
-    clicks: 42,
-    clickDetails: [
-      { timestamp: new Date().toISOString(), referrer: 'google.com', location: 'India' }
-    ]
-  });
+  if (!stats) {
+    return res.status(404).json({ error: 'Shortcode not found' });
+  }
+
+  res.json(stats);
 };
+
